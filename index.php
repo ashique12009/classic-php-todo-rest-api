@@ -25,6 +25,11 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json['message'] = 'Add';
+    // Get the json data from request body
+    $requestedData = json_decode(file_get_contents('php://input'), true);
+
+    // Add new todo
+    $json['todos'] = $classDatabase->addTodo($requestedData);
 }
 elseif ($_SERVER['REQUEST_METHOD'] == 'PUT') {
     $json['message'] = 'Update';
