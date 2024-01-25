@@ -50,6 +50,19 @@ class ClassDatabase
         }
     }
 
+    public function updateTodo($requestedData)
+    {
+        $title     = isset($requestedData['title']) ? $requestedData['title'] : 'No title';
+        $status    = isset($requestedData['status']) ? $requestedData['status'] : 0;
+        $query     = "UPDATE todos SET title=:title, status=:status WHERE id=:id";
+        $statement = $this->connection->prepare($query);
+        $statement->bindParam(':title', $title);
+        $statement->bindParam(':status', $status);
+        $statement->bindParam(':id', $requestedData['id']);
+        $statement->execute();
+        return $this->getTodos();
+    }
+
     public function deleteTodo($id)
     {
         $query     = "DELETE FROM todos WHERE id=:id";

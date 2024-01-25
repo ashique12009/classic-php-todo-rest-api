@@ -37,6 +37,11 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST')
 elseif ($_SERVER['REQUEST_METHOD'] == 'PUT')
 {
     $json['message'] = 'Update';
+    // Get the json data from request body
+    $requestedData = json_decode(file_get_contents('php://input'), true);
+
+    // Update todo
+    $json['todos'] = $classDatabase->updateTodo($requestedData);
 }
 elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE')
 {
