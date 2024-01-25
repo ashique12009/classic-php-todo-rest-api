@@ -41,6 +41,11 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'PUT')
 elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE')
 {
     $json['message'] = 'Delete';
+    // Get the json data from request body
+    $requestedData = json_decode(file_get_contents('php://input'), true);
+
+    // Delete todo
+    $json['todos']   = $classDatabase->deleteTodo($requestedData['id']);
 }
 else
 {

@@ -49,4 +49,13 @@ class ClassDatabase
             return false; // Return false to indicate an error
         }
     }
+
+    public function deleteTodo($id)
+    {
+        $query     = "DELETE FROM todos WHERE id=:id";
+        $statement = $this->connection->prepare($query);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+        return $this->getTodos();
+    }
 }
