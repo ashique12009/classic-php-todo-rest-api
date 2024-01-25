@@ -23,23 +23,27 @@ class ClassDatabase
         return $this->connection;
     }
 
-    public function getTodos() {
-        $query = "SELECT * FROM todos";
+    public function getTodos()
+    {
+        $query     = "SELECT * FROM todos";
         $statement = $this->connection->prepare($query);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addTodo($requestedData) {
-        $title = isset($requestedData['title']) ? $requestedData['title'] : 'No title';
-        $query = "INSERT INTO todos SET title=:title";
+    public function addTodo($requestedData)
+    {
+        $title     = isset($requestedData['title']) ? $requestedData['title'] : 'No title';
+        $query     = "INSERT INTO todos SET title=:title";
         $statement = $this->connection->prepare($query);
         $statement->bindParam(':title', $title);
-    
-        if ($statement->execute()) {
+
+        if ($statement->execute())
+        {
             return $this->getTodos();
-        } 
-        else {
+        }
+        else
+        {
             // Output the error information for debugging
             print_r($statement->errorInfo());
             return false; // Return false to indicate an error
