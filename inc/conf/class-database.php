@@ -54,6 +54,11 @@ class ClassDatabase
     {
         $title     = isset($requestedData['title']) ? $requestedData['title'] : 'No title';
         $status    = isset($requestedData['status']) ? $requestedData['status'] : 0;
+
+        if (($status != 0 && $status != 1) || !is_numeric($status)) {
+            $status = 0;
+        }
+
         $query     = "UPDATE todos SET title=:title, status=:status WHERE id=:id";
         $statement = $this->connection->prepare($query);
         $statement->bindParam(':title', $title);
