@@ -22,4 +22,11 @@ class ClassDatabase
 
         return $this->connection;
     }
+
+    public function getTodos() {
+        $query = "SELECT * FROM todos";
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

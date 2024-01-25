@@ -21,6 +21,7 @@ if ($token != 'secret_token') {
 }
 elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $json['message'] = 'Fetch todos';
+    $json['todos'] = $classDatabase->getTodos();
 }
 elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json['message'] = 'Add';
