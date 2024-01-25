@@ -1,6 +1,17 @@
 <?php 
+// Database stuff
+require_once "inc/conf/class-database.php";
+require_once "inc/conf/class-table-creation.php";
 
-$token = $_SERVER['HTTP_TOKEN'];
+$classDatabase                  = new ClassDatabase();
+$classDatabaseConnectionObject  = $classDatabase->getConnection();
+$createTable                    = new ClassTableCreation($classDatabaseConnectionObject);
+
+$createTable->createDatabaseTables();
+// End of Database stuff
+
+// REST API stuff
+$token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : null;
 
 $json = ['message' => null, 'token' => $token];
 
