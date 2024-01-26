@@ -1,4 +1,16 @@
 <?php
+// Enable CORS for all origins
+header("Access-Control-Allow-Origin: *");
+
+// Set other CORS headers
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Set the content type header
+header("Content-Type: application/json; charset=UTF-8");
+
+header('Access-Control-Allow-Headers: X-Requested-With, token');
+
 // Database stuff
 require_once "inc/conf/class-database.php";
 require_once "inc/conf/class-table-creation.php";
@@ -12,6 +24,12 @@ $createTable->createDatabaseTables();
 
 // REST API stuff
 $token = isset($_SERVER['HTTP_TOKEN']) ? $_SERVER['HTTP_TOKEN'] : null;
+
+// Handle OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 $json = ['message' => null, 'token' => $token];
 
@@ -57,5 +75,4 @@ else
     $json['message'] = 'Not yet implemented!';
 }
 
-header('Content-Type: application/json');
 echo json_encode($json);
