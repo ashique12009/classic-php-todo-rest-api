@@ -5,7 +5,7 @@ class ClassDatabase
     private $host          = "localhost";
     private $database_name = "local-php-todo-crud";
     private $username      = "root";
-    private $password      = "";
+    private $password      = "password";
     public $connection;
 
     public function getConnection()
@@ -54,6 +54,21 @@ class ClassDatabase
     {
         $title     = isset($requestedData['title']) ? $requestedData['title'] : 'No title';
         $status    = isset($requestedData['status']) ? $requestedData['status'] : 0;
+        $id        = $requestedData['id'];
+
+        if (!is_numeric($id) || $id <= 0 || $id == '') {
+            return $this->getTodos();
+        }
+
+        // Check if id is valid
+        $query     = "SELECT * FROM todos WHERE id=:id";
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        $id_data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($id_data) == 0) {
+            return $this->getTodos();
+        }
 
         if (($status != 0 && $status != 1) || !is_numeric($status)) {
             $status = 0;
@@ -70,6 +85,16 @@ class ClassDatabase
 
     public function deleteTodo($id)
     {
+        // Check if id is valid
+        $query     = "SELECT * FROM todos WHERE id=:id";
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+        $id_data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($id_data) == 0) {
+            return $this->getTodos();
+        }
+        
         $query     = "DELETE FROM todos WHERE id=:id";
         $statement = $this->connection->prepare($query);
         $statement->bindParam(':id', $id);
